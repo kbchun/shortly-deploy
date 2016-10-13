@@ -7,13 +7,13 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', console.log.bind(console, 'connected!')); 
 
-var User = mongoose.Schema({
+var userSchema = mongoose.Schema({
   id: { type: mongoose.Schema.Types.ObjectId, unique: true }, // might not work
   username: { type: String, unique: true }, 
   password: String, 
 });
 
-var Link = mongoose.Schema({
+var linkSchema = mongoose.Schema({
   id: { type: mongoose.Schema.Types.ObjectId, unique: true }, // TODO do we have to add tables to MongoDB?
   url: String,
   baseUrl: String, 
@@ -24,5 +24,5 @@ var Link = mongoose.Schema({
 });
 
 module.exports.db = db;
-module.exports.User = User;
-module.exports.Link = Link;
+module.exports.userSchema = userSchema;
+module.exports.linkSchema = linkSchema;
