@@ -11,8 +11,7 @@
   "scripts": {
     "start": "grunt build && grunt upload",
     "test": "grunt test",
-    "lint": "eslint ./",
-    "tst": "mongod --dbpath=/Users/student/Desktop/shortly-deploy/db"
+    "lint": "eslint ./"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",

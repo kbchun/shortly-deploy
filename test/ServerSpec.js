@@ -111,6 +111,7 @@ describe('', function() {
             'url': 'http://www.roflzoo.com/'})
           .expect(200)
           .expect(function(res) {
+            console.log('response: ' + res);
             var secondCode = res.body.code;
             expect(secondCode).to.equal(firstCode);
           })
