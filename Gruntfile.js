@@ -2,8 +2,8 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    concat: { // which files to concat together?
-      lib: { // what does this mean?
+    concat: {
+      lib: {
         src: ['public/lib/jquery.js', 'public/lib/underscore.js', 'public/lib/backbone.js', 'public/lib/handlebars.js'],
         dest: 'public/dist/libraries.js',
       },
@@ -28,10 +28,10 @@ module.exports = function(grunt) {
       }
     },
 
-    uglify: { // TODO test individually
+    uglify: {
       my_target: {
         files: {
-          'public/dist/libraries_min.js': ['public/dist/libraries.js'], // what about multiple files?
+          'public/dist/libraries_min.js': ['public/dist/libraries.js'],
           'public/dist/client_min.js': ['public/dist/client.js']
         }
       }
@@ -42,10 +42,7 @@ module.exports = function(grunt) {
     },
 
     eslint: {
-      target: [
-        // Add list of files to lint here
-        // TODO come back when we're Mongo-ing
-      ]
+      target: ['lib/*.js', 'app/**/*.js']
     },
 
     cssmin: {
@@ -81,6 +78,9 @@ module.exports = function(grunt) {
           stderr: true,
           failOnError: true
         }
+      },
+      mongo: {
+        command: 'mongod --dbpath=./db'
       }
     },
   });
@@ -99,6 +99,10 @@ module.exports = function(grunt) {
     grunt.task.run([ 'nodemon', 'watch' ]);
   });
 
+  grunt.registerTask('server', function (target) {
+    grunt.task.run([ 'nodemon']);
+  });
+
   ////////////////////////////////////////////////////
   // Main grunt tasks
   ////////////////////////////////////////////////////
@@ -115,9 +119,8 @@ module.exports = function(grunt) {
     'cssmin'
   ]);
 
-  grunt.registerTask('upload', function(n) { // TODO this is a bad name for what it does
+  grunt.registerTask('upload', function(n) { 
     if (grunt.option('prod')) {
-      // add your production server task here
       grunt.task.run(['shell:prodServer']);
     } else {
       grunt.task.run([ 'server-dev' ]);
@@ -125,12 +128,19 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('deploy', [
-    // add your deploy tasks here
-    // 'test',
-    // current 
+    'test',
     'build',
     'upload'
-  ]); // TODO create a script to run on the prduction server: npm install && grunt build
+  ]); 
+
+  // grunt.registerTask('setup', function(n) {
+  //   grunt.task.run(['shell:mongo']);
+  //   if (grunt.option['prod']) {
+  //     grunt.task.run(['server']);
+  //   } else {
+  //     grunt.task.run(['server-dev']);
+  //   }
+  // });
 
 
 };
