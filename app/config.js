@@ -1,40 +1,28 @@
-var path = require('path');
-var knex = require('knex')({
-  client: 'sqlite3',
-  connection: {
-    filename: path.join(__dirname, '../db/shortly.sqlite')
-  },
-  useNullAsDefault: true
-});
-var db = require('bookshelf')(knex);
+// Connection URL
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/');
 
-db.knex.schema.hasTable('urls').then(function(exists) {
-  if (!exists) {
-    db.knex.schema.createTable('urls', function (link) {
-      link.increments('id').primary();
-      link.string('url', 255);
-      link.string('baseUrl', 255);
-      link.string('code', 100);
-      link.string('title', 255);
-      link.integer('visits');
-      link.timestamps();
-    }).then(function (table) {
-      console.log('Created Table', table);
-    });
-  }
+// Use connect method to connect to the server
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', console.log.bind(console, 'connected!')); 
+
+var User = mongoose.Schema({
+  id: { type: mongoose.Schema.Types.ObjectId, unique: true }, // might not work
+  username: { type: String, unique: true }, 
+  password: String, 
 });
 
-db.knex.schema.hasTable('users').then(function(exists) {
-  if (!exists) {
-    db.knex.schema.createTable('users', function (user) {
-      user.increments('id').primary();
-      user.string('username', 100).unique();
-      user.string('password', 100);
-      user.timestamps();
-    }).then(function (table) {
-      console.log('Created Table', table);
-    });
-  }
+var Link = mongoose.Schema({
+  id: { type: mongoose.Schema.Types.ObjectId, unique: true }, // TODO do we have to add tables to MongoDB?
+  url: String,
+  baseUrl: String, 
+  code: String,
+  title: String,
+  visits: Number
+  // Leaving out timestamps because our app does not use it
 });
 
-module.exports = db;
+module.exports.db = db;
+module.exports.User = User;
+module.exports.Link = Link;

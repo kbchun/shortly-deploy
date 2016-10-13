@@ -59,7 +59,7 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: [
-          'public/client/**/*.js', // why watch client?
+          'public/client/**/*.js',
           'public/lib/**/*.js',
         ],
         tasks: [
@@ -115,7 +115,7 @@ module.exports = function(grunt) {
     'cssmin'
   ]);
 
-  grunt.registerTask('upload', function(n) {
+  grunt.registerTask('upload', function(n) { // TODO this is a bad name for what it does
     if (grunt.option('prod')) {
       // add your production server task here
       grunt.task.run(['shell:prodServer']);
@@ -126,10 +126,11 @@ module.exports = function(grunt) {
 
   grunt.registerTask('deploy', [
     // add your deploy tasks here
-    //'test',
+    // 'test',
+    // current 
     'build',
     'upload'
-  ]);
+  ]); // TODO create a script to run on the prduction server: npm install && grunt build
 
 
 };
