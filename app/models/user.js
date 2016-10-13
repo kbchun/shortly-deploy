@@ -3,8 +3,8 @@ var bcrypt = require('bcrypt-nodejs');
 var Promise = require('bluebird');
 var mongoose = require('mongoose');
 
-db.userSchema.methods.comparePassword = function(attemptedPassword, callback) {
-  bcrypt.compare(attemptedPassword, this.password, function(err, isMatch) {
+db.userSchema.methods.comparePassword = function(attemptedPassword, actualPassword, callback) {
+  bcrypt.compare(attemptedPassword, actualPassword, function(err, isMatch) {
     callback(isMatch);
   });
 };
